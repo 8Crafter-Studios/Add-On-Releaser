@@ -8,7 +8,7 @@
 [![NPM Last Update](https://img.shields.io/npm/last-update/add-on-releaser)](https://npmjs.com/package/add-on-releaser)
 [![NPM Unpacked Size](https://img.shields.io/npm/unpacked-size/add-on-releaser)](https://npmjs.com/package/add-on-releaser)
 [![GitHub last commit](https://img.shields.io/github/last-commit/8Crafter-Studios/add-on-releaser)](https://github.com/8Crafter-Studios/add-on-releaser/commits/main)
-[![Discord](https://img.shields.io/discord/1213197616570048512?logo=discord&label=discord&link=https%3A%2F%2Fdiscord.gg%2FjrCTeHGuhx)](https://discord.gg/jrCTeHGuhx)
+[![Discord](https://img.shields.io/discord/1213197616570048512?logo=discord&label=discord&link=https%3A%2F%2Fdiscord.gg%2F8crafter-studios)](https://discord.gg/8crafter-studios)
 
 This is a command-line tool that handles every step of generating the release files for your Minecraft Bedrock Edition add-on for you.
 
