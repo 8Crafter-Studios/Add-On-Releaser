@@ -8,7 +8,7 @@ import * as CommentJSON from "comment-json";
 /**
  * The version of the Add-on Releaser.
  */
-export const format_version = "0.0.2" as const;
+export const format_version = "0.0.3" as const;
 
 const args: string[] = process.argv.slice(2);
 const configPath: string = args[0] || "./add-on-releaser-config.json";

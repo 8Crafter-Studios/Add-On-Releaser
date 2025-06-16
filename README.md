@@ -7,7 +7,7 @@
 [![NPM License](https://img.shields.io/npm/l/add-on-releaser)](https://npmjs.com/package/add-on-releaser)
 [![NPM Last Update](https://img.shields.io/npm/last-update/add-on-releaser)](https://npmjs.com/package/add-on-releaser)
 [![NPM Unpacked Size](https://img.shields.io/npm/unpacked-size/add-on-releaser)](https://npmjs.com/package/add-on-releaser)
-[![GitHub last commit](https://img.shields.io/github/last-commit/8Crafter-Studios/random-image-generator)](https://github.com/8Crafter-Studios/random-image-generator/commits/main)
+[![GitHub last commit](https://img.shields.io/github/last-commit/8Crafter-Studios/add-on-releaser)](https://github.com/8Crafter-Studios/add-on-releaser/commits/main)
 [![Discord](https://img.shields.io/discord/1213197616570048512?logo=discord&label=discord&link=https%3A%2F%2Fdiscord.gg%2FjrCTeHGuhx)](https://discord.gg/jrCTeHGuhx)
 
 This is a command-line tool that handles every step of generating the release files for your Minecraft Bedrock Edition add-on for you.
@@ -60,7 +60,7 @@ Here is the default configuration file (Note: You will need to modify a few opti
             "modifications": [
                 {
                     "type": "delete_folders",
-                    "targets": ["src", "node_modules", ".git", ".vscode", "deprecated"] // This is a list of folders that will not be included in the release fils.
+                    "targets": ["src", "node_modules", ".git", ".vscode", "deprecated"] // This is a list of folders that will not be included in the release files.
                 },
                 {
                     "type": "delete_files",
@@ -78,7 +78,7 @@ Here is the default configuration file (Note: You will need to modify a few opti
                         "jsconfig.json",
                         "tsconfig.json",
                         "tsconfig.tsbuildinfo"
-                    ] // This is a list of files that will not be included in the release fils.
+                    ] // This is a list of files that will not be included in the release files.
                 }
             ]
         },
@@ -88,7 +88,7 @@ Here is the default configuration file (Note: You will need to modify a few opti
             "modifications": [
                 {
                     "type": "delete_folders",
-                    "targets": ["node_modules", ".git", ".vscode", "deprecated", "blockbench_models"] // This is a list of folders that will not be included in the release fils.
+                    "targets": ["node_modules", ".git", ".vscode", "deprecated", "blockbench_models"] // This is a list of folders that will not be included in the release files.
                 },
                 {
                     "type": "delete_files",
@@ -106,7 +106,7 @@ Here is the default configuration file (Note: You will need to modify a few opti
                         "jsconfig.json",
                         "tsconfig.json",
                         "tsconfig.tsbuildinfo"
-                    ] // This is a list of files that will not be included in the release fils.
+                    ] // This is a list of files that will not be included in the release files.
                 }
             ]
         }
