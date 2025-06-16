@@ -1,30 +1,48 @@
 {
-  "name": "add-on-releaser",
-  "version": "0.0.1",
-  "description": "8Crafter's MCBE Add-On Releaser",
-  "homepage": "https://github.com/8Crafter-Studios/add-on-releaser#readme",
-  "bugs": {
-    "url": "https://github.com/8Crafter-Studios/add-on-releaser/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/8Crafter-Studios/add-on-releaser.git"
-  },
-  "license": "MIT",
-  "author": "8Crafter",
-  "type": "module",
-  "main": "./lib/exports.js",
-  "bin": {
-    "add-on-releaser": "bin/add-on-releaser"
-  },
-  "scripts": {
-    "test": "code ./lib/add-on-releaser.js"
-  },
-  "dependencies": {
-    "chalk": "^5.4.1",
-    "comment-json": "^4.2.5"
-  },
-  "devDependencies": {
-    "@types/node": "^24.0.1"
-  }
+    "name": "add-on-releaser",
+    "version": "0.0.2",
+    "description": "8Crafter's MCBE Add-On Releaser",
+    "homepage": "https://github.com/8Crafter-Studios/add-on-releaser#readme",
+    "bugs": {
+        "url": "https://github.com/8Crafter-Studios/add-on-releaser/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/8Crafter-Studios/add-on-releaser.git"
+    },
+    "license": "MIT",
+    "author": "8Crafter",
+    "type": "module",
+    "main": "./lib/exports.js",
+    "bin": {
+        "add-on-releaser": "bin/add-on-releaser"
+    },
+    "scripts": {
+        "test": "code ./lib/add-on-releaser.js"
+    },
+    "dependencies": {
+        "chalk": "^5.4.1",
+        "comment-json": "^4.2.5"
+    },
+    "devDependencies": {
+        "@types/node": "^24.0.1"
+    },
+    "engines": {
+        "node": ">=14.17"
+    },
+    "keywords": [
+        "8Crafter",
+        "MCBE",
+        "Add-On",
+        "Releaser",
+        "CLI",
+        "Node.js",
+        "Module",
+        "Minecraft Bedrock Edition"
+    ],
+    "preferGlobal": true,
+    "contributors": [
+        "8Crafter"
+    ]
 }
+
