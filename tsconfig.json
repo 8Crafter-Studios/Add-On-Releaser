@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "target": "ES2022",
+        "module": "node16",
+        "moduleResolution": "node16",
+        "outDir": "./lib",
+        "rootDir": "./src",
+        "declaration": true,
+        "declarationDir": "./lib",
+        "sourceMap": true,
+        "declarationMap": true,
+        "lib": ["ES2022"],
+        "allowSyntheticDefaultImports": true,
+        "forceConsistentCasingInFileNames": true,
+        "strict": true,
+        "noUncheckedIndexedAccess": true
+    }
+}

@@ -1,0 +1,511 @@
+{
+    "$schema": "https://json-schema.org/draft-07/schema#",
+    "$id": "https://www.8crafter.com/schemas/8crafters-add-on-releaser.schema.json",
+    "title": "8Crafter's MCBE Add-on Releaser Configuration",
+    "default": {
+        "cwd": "./",
+        "destination": "./Release Files",
+        "packs": [
+            {
+                "path": "./BP",
+                "release_name": "bp",
+                "modifications": [
+                    {
+                        "type": "delete_folders",
+                        "targets": ["src", "node_modules", ".git", ".vscode", "deprecated"]
+                    },
+                    {
+                        "type": "delete_files",
+                        "targets": [
+                            ".git",
+                            ".eslintrc",
+                            ".gitignore",
+                            ".gitmodules",
+                            ".hintrc",
+                            ".gitattributes",
+                            ".mcattributes",
+                            "desktop.ini",
+                            "package.json",
+                            "package-lock.json",
+                            "jsconfig.json",
+                            "tsconfig.json",
+                            "tsconfig.tsbuildinfo"
+                        ]
+                    }
+                ]
+            },
+            {
+                "path": "./RP",
+                "release_name": "rp",
+                "modifications": [
+                    {
+                        "type": "delete_folders",
+                        "targets": ["node_modules", ".git", ".vscode", "deprecated", "blockbench_models"]
+                    },
+                    {
+                        "type": "delete_files",
+                        "targets": [
+                            ".git",
+                            ".eslintrc",
+                            ".gitignore",
+                            ".gitmodules",
+                            ".hintrc",
+                            ".gitattributes",
+                            ".mcattributes",
+                            "desktop.ini",
+                            "package.json",
+                            "package-lock.json",
+                            "jsconfig.json",
+                            "tsconfig.json",
+                            "tsconfig.tsbuildinfo"
+                        ]
+                    }
+                ]
+            }
+        ],
+        "file_type": "mcaddon",
+        "file_name": "myaddon-v${version}",
+        "file_name_version": {
+            "format": "dashed",
+            "sourcePack": "00000000-0000-4000-8000-000000000000"
+        },
+        "release_version_format": "tuple"
+    },
+    "type": "object",
+    "required": ["destination", "packs"],
+    "allOf": [
+        {
+            "oneOf": [
+                {
+                    "required": ["file_type", "file_name", "file_name_version"],
+                    "properties": {
+                        "file_type": {
+                            "const": "mcaddon"
+                        },
+                        "file_name": {
+                            "description": "The name of the mcaddon file, should not include the `.mcaddon` extension. Put `${version}` in the name to have it be replaced with the version of the pack. The version will be formatted like `1-2-3-preview-20`.",
+                            "type": "string",
+                            "pattern": "^[a-zA-Z0-9_\\-]*\\$\\{version\\}[a-zA-Z0-9_\\-]*$",
+                            "default": "myaddon-v${version}"
+                        },
+                        "file_name_version": {
+                            "description": "An object containing the format of the version number to be used in the file name of the release files.",
+                            "type": "object",
+                            "default": {
+                                "format": "dashed",
+                                "sourcePack": ""
+                            },
+                            "required": ["sourcePack"],
+                            "properties": {
+                                "sourcePack": {
+                                    "description": "The pack to get the version number from, should be the UUID of a pack in the `packs` array.",
+                                    "type": "string",
+                                    "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+                                },
+                                "format": {
+                                    "description": "The format of the version number to be used in the file name of the release files.",
+                                    "type": "string",
+                                    "default": "dashed"
+                                }
+                            },
+                            "oneOf": [
+                                {
+                                    "required": ["format"],
+                                    "properties": {
+                                        "format": {
+                                            "description": "The format of the version number to be used in the file name of the release files.\ndashed: The version number will be formatted like `1-2-3-preview-20`. Release candidates will capitalize RC (1.2.3-rc.1 -> 1-2-3-RC-1)",
+                                            "const": "dashed"
+                                        }
+                                    }
+                                },
+                                {
+                                    "required": ["format"],
+                                    "properties": {
+                                        "format": {
+                                            "description": "The format of the version number to be used in the file name of the release files.\ncurrent: The version number will be the same as the version number of the pack.",
+                                            "const": "current"
+                                        }
+                                    }
+                                },
+                                {
+                                    "required": ["format", "JavaScript_callback"],
+                                    "properties": {
+                                        "format": {
+                                            "description": "The format of the version number to be used in the file name of the release files.\nJavaScript: The semver version will be passed into the provided JavaScript function. The function should accept a semver version as a string and return a string.",
+                                            "const": "JavaScript"
+                                        },
+                                        "JavaScript_callback": {
+                                            "description": "The JavaScript callback function to be used to format the version number. The function should accept a semver version as a string and return a string. Type: (version: string) => string",
+                                            "default": "(version) => version.replace('rc', 'RC').split('+')[0].replaceAll('.', '-')",
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "required": ["file_type"],
+                    "properties": {
+                        "file_type": {
+                            "const": "mcpack"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "oneOf": [
+                {
+                    "required": [],
+                    "properties": {
+                        "release_version_format": {
+                            "const": "semver"
+                        },
+                        "strip_build_version": {
+                            "description": "If the build version should be stripped from the release version. ex. v1.2.3-preview.20+BUILD.1 -> v1.2.3-preview.20",
+                            "default": true,
+                            "const": true,
+                            "type": "boolean"
+                        },
+                        "strip_preview_version": {
+                            "description": "If the preview version should be stripped from the release version, requires strip_build_version to be true. ex. v1.2.3-preview.20+BUILD.1 -> v1.2.3",
+                            "default": false,
+                            "type": "boolean"
+                        }
+                    }
+                },
+                {
+                    "required": ["release_version_format", "strip_build_version"],
+                    "properties": {
+                        "release_version_format": {
+                            "const": "semver"
+                        },
+                        "strip_build_version": {
+                            "description": "If the build version should be stripped from the release version. ex. v1.2.3-preview.20+BUILD.1 -> v1.2.3-preview.20",
+                            "default": true,
+                            "const": false,
+                            "type": "boolean"
+                        },
+                        "strip_preview_version": {
+                            "description": "If the preview version should be stripped from the release version, requires strip_build_version to be true. ex. v1.2.3-preview.20+BUILD.1 -> v1.2.3",
+                            "default": false,
+                            "const": false,
+                            "type": "boolean"
+                        }
+                    }
+                },
+                {
+                    "required": [],
+                    "properties": {
+                        "release_version_format": {
+                            "enum": ["tuple", "current"]
+                        }
+                    }
+                }
+            ]
+        }
+    ],
+    "properties": {
+        "cwd": {
+            "description": "The current working directory to use to resolve relative paths.",
+            "default": "./",
+            "type": "string"
+        },
+        "destination": {
+            "description": "The directory to write the release files to.",
+            "default": "./Release Files",
+            "type": "string"
+        },
+        "packs": {
+            "description": "The list of packs to include in the release files. If multiple packs have the same UUID, an error will be thrown.",
+            "type": "array",
+            "default": [],
+            "uniqueItems": true,
+            "items": {
+                "description": "A pack to be included in the release files.",
+                "required": ["path"],
+                "type": "object",
+                "default": {
+                    "path": "./",
+                    "release_name": "",
+                    "modifications": []
+                },
+                "properties": {
+                    "path": {
+                        "description": "The path to the pack.",
+                        "type": "string",
+                        "default": "./"
+                    },
+                    "release_name": {
+                        "description": "If the file type is mcaddon, the name of the folder in the mcaddon file. If the file type is mcpack, the name of the mcpack file. Defaults to the name of the pack's folder.",
+                        "type": "string"
+                    },
+                    "modifications": {
+                        "description": "The list of modifications to include in the release files, the will be executed in the order they are listed.",
+                        "type": "array",
+                        "items": {
+                            "description": "A modification to be included in the release files.",
+                            "type": "object",
+                            "oneOf": [
+                                {
+                                    "required": ["type", "source", "destination"],
+                                    "properties": {
+                                        "type": {
+                                            "description": "The type of the modification.\nadd_file: Add a file into the release files from a location on your computer or a URI.",
+                                            "type": "string",
+                                            "const": "add_file"
+                                        },
+                                        "source": {
+                                            "description": "The path to the source file, relative to the CWD, or a URI.",
+                                            "type": "string"
+                                        },
+                                        "destination": {
+                                            "description": "The path to where the file should be placed, relative to the pack folder, any missing directories in the path will be created.",
+                                            "type": "string"
+                                        },
+                                        "overwrite": {
+                                            "description": "If the file should be overwritten if it already exists.",
+                                            "default": false,
+                                            "type": "boolean"
+                                        }
+                                    }
+                                },
+                                {
+                                    "required": ["type", "source", "destination"],
+                                    "properties": {
+                                        "type": {
+                                            "description": "The type of the modification.\nadd_folder: Add a folder into the release files from a location on your computer, does not support URIs.",
+                                            "type": "string",
+                                            "const": "add_folder"
+                                        },
+                                        "source": {
+                                            "description": "The path to the source folder, relative to the CWD.",
+                                            "type": "string"
+                                        },
+                                        "destination": {
+                                            "description": "The path to where the folder should be placed, relative to the pack folder, any missing directories in the path will be created.",
+                                            "type": "string"
+                                        },
+                                        "conflict_resolution": {
+                                            "description": "What to do if the folder already exists in the release files.",
+                                            "default": "merge",
+                                            "type": "string",
+                                            "enum": ["overwrite", "skip", "merge"]
+                                        }
+                                    }
+                                },
+                                {
+                                    "required": ["type", "target", "new_name"],
+                                    "properties": {
+                                        "type": {
+                                            "description": "The type of the modification.\nrename_file: Rename a file in the release files.",
+                                            "type": "string",
+                                            "const": "rename_file"
+                                        },
+                                        "target": {
+                                            "description": "The path to the target file to be renamed, relative to the pack folder.",
+                                            "type": "string"
+                                        },
+                                        "new_name": {
+                                            "description": "The new name of the file.",
+                                            "type": "string"
+                                        },
+                                        "overwrite": {
+                                            "description": "If the file should be overwritten if it already exists.",
+                                            "default": false,
+                                            "type": "boolean"
+                                        }
+                                    }
+                                },
+                                {
+                                    "required": ["type", "target", "new_name"],
+                                    "properties": {
+                                        "type": {
+                                            "description": "The type of the modification.\nrename_folder: Rename a folder in the release files.",
+                                            "type": "string",
+                                            "const": "rename_folder"
+                                        },
+                                        "target": {
+                                            "description": "The path to the target folder to be renamed, relative to the pack folder.",
+                                            "type": "string"
+                                        },
+                                        "new_name": {
+                                            "description": "The new name of the folder.",
+                                            "type": "string"
+                                        },
+                                        "conflict_resolution": {
+                                            "description": "What to do if a folder with the chosen name already exists in the release files.",
+                                            "default": "merge",
+                                            "type": "string",
+                                            "enum": ["overwrite", "skip", "merge"]
+                                        }
+                                    }
+                                },
+                                {
+                                    "required": ["type", "target", "destination"],
+                                    "properties": {
+                                        "type": {
+                                            "description": "The type of the modification.\nmove_file: Move a file in the release files.",
+                                            "type": "string",
+                                            "const": "move_file"
+                                        },
+                                        "target": {
+                                            "description": "The path to the target file to be moved, relative to the pack folder.",
+                                            "type": "string"
+                                        },
+                                        "destination": {
+                                            "description": "The path to where the file should be moved, relative to the pack folder, any missing directories in the path will be created.",
+                                            "type": "string"
+                                        },
+                                        "overwrite": {
+                                            "description": "If the file should be overwritten if it already exists.",
+                                            "default": false,
+                                            "type": "boolean"
+                                        }
+                                    }
+                                },
+                                {
+                                    "required": ["type", "target", "destination"],
+                                    "properties": {
+                                        "type": {
+                                            "description": "The type of the modification.\nmove_folder: Move a folder in the release files.",
+                                            "type": "string",
+                                            "const": "move_folder"
+                                        },
+                                        "target": {
+                                            "description": "The path to the target folder to be moved, relative to the pack folder.",
+                                            "type": "string"
+                                        },
+                                        "destination": {
+                                            "description": "The path to where the folder should be moved, relative to the pack folder, any missing directories in the path will be created.",
+                                            "type": "string"
+                                        },
+                                        "conflict_resolution": {
+                                            "description": "What to do if a folder with the same name already exists at the destination location in the release files.",
+                                            "default": "merge",
+                                            "type": "string",
+                                            "enum": ["overwrite", "skip", "merge"]
+                                        }
+                                    }
+                                },
+                                {
+                                    "required": ["type", "targets"],
+                                    "properties": {
+                                        "type": {
+                                            "description": "The type of the modification.\ndelete_files: Delete a set of files from the release files.",
+                                            "type": "string",
+                                            "const": "delete_files"
+                                        },
+                                        "targets": {
+                                            "description": "The paths to the target files to be deleted, relative to the pack folder. Supports glob patterns.",
+                                            "type": "array",
+                                            "items": {
+                                                "description": "The path to the target file to be deleted, relative to the pack folder. Supports glob patterns.",
+                                                "type": "string"
+                                            },
+                                            "uniqueItems": true
+                                        }
+                                    }
+                                },
+                                {
+                                    "required": ["type", "targets"],
+                                    "properties": {
+                                        "type": {
+                                            "description": "The type of the modification.\ndelete_folders: Delete a set of folders from the release files.",
+                                            "type": "string",
+                                            "const": "delete_folders"
+                                        },
+                                        "targets": {
+                                            "description": "The paths to the target folders to be deleted, relative to the pack folder. Supports glob patterns.",
+                                            "type": "array",
+                                            "items": {
+                                                "description": "The path to the target folder to be deleted, relative to the pack folder. Supports glob patterns.",
+                                                "type": "string"
+                                            },
+                                            "uniqueItems": true
+                                        }
+                                    }
+                                },
+                                {
+                                    "required": ["type", "target", "regex", "find", "replace"],
+                                    "properties": {
+                                        "type": {
+                                            "description": "The type of the modification.\nfind_and_replace_in_file: Find and replace a string in a file.",
+                                            "type": "string",
+                                            "const": "find_and_replace_in_file"
+                                        },
+                                        "target": {
+                                            "description": "The path to the target file, relative to the pack folder. Supports glob patterns.",
+                                            "type": "string"
+                                        },
+                                        "regex": {
+                                            "description": "If the find string should be treated as a regex.",
+                                            "const": false,
+                                            "default": false,
+                                            "type": "boolean"
+                                        },
+                                        "find": {
+                                            "description": "The string to find in the file.",
+                                            "type": "string"
+                                        },
+                                        "replace": {
+                                            "description": "The string to replace the find string with.",
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                {
+                                    "required": ["type", "target", "regex", "find", "replace"],
+                                    "properties": {
+                                        "type": {
+                                            "description": "The type of the modification.\nfind_and_replace_in_file: Find and replace using a regex in a file.",
+                                            "type": "string",
+                                            "const": "find_and_replace_in_file"
+                                        },
+                                        "target": {
+                                            "description": "The path to the target file, relative to the pack folder. Supports glob patterns.",
+                                            "type": "string"
+                                        },
+                                        "regex": {
+                                            "description": "If the find string should be treated as a regex.",
+                                            "const": true,
+                                            "type": "boolean"
+                                        },
+                                        "find": {
+                                            "description": "The regex to find in the file, should not include the beginning and end `/` or flags.",
+                                            "type": "string"
+                                        },
+                                        "flags": {
+                                            "description": "The regex flags to use.",
+                                            "pattern": "^[dgimsuvy]*$",
+                                            "default": "",
+                                            "type": "string"
+                                        },
+                                        "replace": {
+                                            "description": "The string to replace the find regex with, can use things like `$1`, `$2`, etc.",
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "file_type": {
+            "description": "The type of the release files, if it is mcpack, all packs will be outputted as individual mcpack files, if it is mcaddon, all packs will be included in a single mcaddon file.",
+            "type": "string",
+            "default": "mcaddon",
+            "enum": ["mcpack", "mcaddon"]
+        },
+        "release_version_format": {
+            "description": "The format of the release version, either tuple, semver, or current. If tuple, the version will be an array of three numbers, between -65537 and 65536. If semver, the version will be a valid semver string. If current, the version format will be the same as the version format of the original pack. Defaults to tuple. Note: If you use semver, the pack will not be able to be uploaded to realms due to a bug.",
+            "default": "tuple",
+            "type": "string",
+            "enum": ["tuple", "semver", "current"]
+        }
+    }
+}
