@@ -1,6 +1,6 @@
 {
     "name": "add-on-releaser",
-    "version": "0.0.3",
+    "version": "0.1.0",
     "description": "8Crafter's MCBE Add-On Releaser",
     "homepage": "https://github.com/8Crafter-Studios/add-on-releaser#readme",
     "bugs": {
@@ -45,4 +45,3 @@
         "8Crafter"
     ]
 }
-
