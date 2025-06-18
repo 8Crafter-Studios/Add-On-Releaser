@@ -2,6 +2,182 @@
     "$schema": "https://json-schema.org/draft-07/schema#",
     "$id": "https://www.8crafter.com/schemas/8crafters-add-on-releaser.schema.json",
     "title": "8Crafter's MCBE Add-on Releaser Configuration",
+    "examples": [
+        {
+            "cwd": "./",
+            "destination": "./Release Files",
+            "packs": [
+                {
+                    "path": "./BP",
+                    "release_name": "bp",
+                    "modifications": [
+                        {
+                            "type": "delete_folders",
+                            "targets": ["src", "node_modules", ".git", ".vscode", "deprecated"]
+                        },
+                        {
+                            "type": "delete_files",
+                            "targets": [
+                                ".git",
+                                ".eslintrc",
+                                ".gitignore",
+                                ".gitmodules",
+                                ".hintrc",
+                                ".gitattributes",
+                                ".mcattributes",
+                                "desktop.ini",
+                                "package.json",
+                                "package-lock.json",
+                                "jsconfig.json",
+                                "tsconfig.json",
+                                "tsconfig.tsbuildinfo"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "path": "./RP",
+                    "release_name": "rp",
+                    "modifications": [
+                        {
+                            "type": "delete_folders",
+                            "targets": ["node_modules", ".git", ".vscode", "deprecated", "blockbench_models"]
+                        },
+                        {
+                            "type": "delete_files",
+                            "targets": [
+                                ".git",
+                                ".eslintrc",
+                                ".gitignore",
+                                ".gitmodules",
+                                ".hintrc",
+                                ".gitattributes",
+                                ".mcattributes",
+                                "desktop.ini",
+                                "package.json",
+                                "package-lock.json",
+                                "jsconfig.json",
+                                "tsconfig.json",
+                                "tsconfig.tsbuildinfo"
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "file_type": "mcaddon",
+            "file_name": "myaddon-v${version}",
+            "file_name_version": {
+                "format": "dashed"
+            },
+            "release_version_format": "tuple"
+        },
+        {
+            "cwd": "./",
+            "destination": "./Release Files",
+            "packs": [
+                {
+                    "path": "./BP",
+                    "release_name": "mybehaviorpack-v${version}",
+                    "modifications": [
+                        {
+                            "type": "delete_folders",
+                            "targets": ["src", "node_modules", ".git", ".vscode", "deprecated"]
+                        },
+                        {
+                            "type": "delete_files",
+                            "targets": [
+                                ".git",
+                                ".eslintrc",
+                                ".gitignore",
+                                ".gitmodules",
+                                ".hintrc",
+                                ".gitattributes",
+                                ".mcattributes",
+                                "desktop.ini",
+                                "package.json",
+                                "package-lock.json",
+                                "jsconfig.json",
+                                "tsconfig.json",
+                                "tsconfig.tsbuildinfo"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "path": "./RP",
+                    "release_name": "myresourcepack-v${version}",
+                    "modifications": [
+                        {
+                            "type": "delete_folders",
+                            "targets": ["node_modules", ".git", ".vscode", "deprecated", "blockbench_models"]
+                        },
+                        {
+                            "type": "delete_files",
+                            "targets": [
+                                ".git",
+                                ".eslintrc",
+                                ".gitignore",
+                                ".gitmodules",
+                                ".hintrc",
+                                ".gitattributes",
+                                ".mcattributes",
+                                "desktop.ini",
+                                "package.json",
+                                "package-lock.json",
+                                "jsconfig.json",
+                                "tsconfig.json",
+                                "tsconfig.tsbuildinfo"
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "file_type": "mcpack",
+            "file_name_version": {
+                "format": "dashed"
+            },
+            "release_version_format": "tuple"
+        },
+        {
+            "cwd": "./",
+            "destination": "./Release Files",
+            "packs": [
+                {
+                    "path": "./BP",
+                    "release_name": "mybehaviorpack-v${version}",
+                    "modifications": [
+                        {
+                            "type": "delete_folders",
+                            "targets": ["src", "node_modules", ".git", ".vscode", "deprecated"]
+                        },
+                        {
+                            "type": "delete_files",
+                            "targets": [
+                                ".git",
+                                ".eslintrc",
+                                ".gitignore",
+                                ".gitmodules",
+                                ".hintrc",
+                                ".gitattributes",
+                                ".mcattributes",
+                                "desktop.ini",
+                                "package.json",
+                                "package-lock.json",
+                                "jsconfig.json",
+                                "tsconfig.json",
+                                "tsconfig.tsbuildinfo"
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "file_type": "mcpack",
+            "file_name_version": {
+                "format": "dashed"
+            },
+            "release_version_format": "tuple"
+        }
+    ],
     "default": {
         "cwd": "./",
         "destination": "./Release Files",
@@ -66,26 +242,24 @@
         "file_type": "mcaddon",
         "file_name": "myaddon-v${version}",
         "file_name_version": {
-            "format": "dashed",
-            "sourcePack": "00000000-0000-4000-8000-000000000000"
+            "format": "dashed"
         },
         "release_version_format": "tuple"
     },
     "type": "object",
-    "required": ["destination", "packs"],
+    "required": ["destination", "packs", "file_name"],
     "allOf": [
         {
             "oneOf": [
                 {
-                    "required": ["file_type", "file_name", "file_name_version"],
                     "properties": {
                         "file_type": {
                             "const": "mcaddon"
                         },
                         "file_name": {
-                            "description": "The name of the mcaddon file, should not include the `.mcaddon` extension. Put `${version}` in the name to have it be replaced with the version of the pack. The version will be formatted like `1-2-3-preview-20`.",
+                            "description": "The name of the mcaddon file, should not include the `.mcaddon` extension. Put `${version}` in the name to have it be replaced with the version of the pack. The version will be formatted like `1-2-3-preview-20` unless otherwise specified in file_name_version.",
                             "type": "string",
-                            "pattern": "^[a-zA-Z0-9_\\-]*\\$\\{version\\}[a-zA-Z0-9_\\-]*$",
+                            // "pattern": "^[a-zA-Z0-9_\\-]*\\$\\{version\\}[a-zA-Z0-9_\\-]*$",
                             "default": "myaddon-v${version}"
                         },
                         "file_name_version": {
@@ -95,12 +269,17 @@
                                 "format": "dashed",
                                 "sourcePack": ""
                             },
-                            "required": ["sourcePack"],
                             "properties": {
                                 "sourcePack": {
-                                    "description": "The pack to get the version number from, should be the UUID of a pack in the `packs` array.",
+                                    "description": "The pack to get the version number from, should be the UUID of a pack in the `packs` array. Defaults to the first pack in the `packs` array.",
                                     "type": "string",
-                                    "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+                                    "examples": ["53170125-3e79-4659-9bba-e49eb90b6dea", "00000000-0000-4000-8000-000000000000", ""],
+                                    "oneOf": [
+                                        {
+                                            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+                                        },
+                                        { "const": "" }
+                                    ]
                                 },
                                 "format": {
                                     "description": "The format of the version number to be used in the file name of the release files.",
@@ -135,8 +314,8 @@
                                             "const": "JavaScript"
                                         },
                                         "JavaScript_callback": {
-                                            "description": "The JavaScript callback function to be used to format the version number. The function should accept a semver version as a string and return a string. Type: (version: string) => string",
-                                            "default": "(version) => version.replace('rc', 'RC').split('+')[0].replaceAll('.', '-')",
+                                            "description": "The JavaScript callback function to be used to format the version number. The function should accept a semver version as a string and return a string. Type: (version: string, pack: {index: number, manifest: ManifestSchema, pack: Pack}) => string",
+                                            "default": "(version, pack) => version.replace('rc', 'RC').split('+')[0].replaceAll('.', '-')",
                                             "type": "string"
                                         }
                                     }
@@ -150,6 +329,56 @@
                     "properties": {
                         "file_type": {
                             "const": "mcpack"
+                        },
+                        "file_name_version": {
+                            "description": "An object containing the format of the version number to be used in the file name of the release files.",
+                            "type": "object",
+                            "default": {
+                                "format": "dashed",
+                                "sourcePack": ""
+                            },
+                            "required": ["sourcePack"],
+                            "properties": {
+                                "format": {
+                                    "description": "The format of the version number to be used in the file name of the release files.",
+                                    "type": "string",
+                                    "default": "dashed"
+                                }
+                            },
+                            "oneOf": [
+                                {
+                                    "required": ["format"],
+                                    "properties": {
+                                        "format": {
+                                            "description": "The format of the version number to be used in the file name of the release files.\ndashed: The version number will be formatted like `1-2-3-preview-20`. Release candidates will capitalize RC (1.2.3-rc.1 -> 1-2-3-RC-1)",
+                                            "const": "dashed"
+                                        }
+                                    }
+                                },
+                                {
+                                    "required": ["format"],
+                                    "properties": {
+                                        "format": {
+                                            "description": "The format of the version number to be used in the file name of the release files.\ncurrent: The version number will be the same as the version number of the pack.",
+                                            "const": "current"
+                                        }
+                                    }
+                                },
+                                {
+                                    "required": ["format", "JavaScript_callback"],
+                                    "properties": {
+                                        "format": {
+                                            "description": "The format of the version number to be used in the file name of the release files.\nJavaScript: The semver version will be passed into the provided JavaScript function. The function should accept a semver version as a string and return a string.",
+                                            "const": "JavaScript"
+                                        },
+                                        "JavaScript_callback": {
+                                            "description": "The JavaScript callback function to be used to format the version number. The function should accept a semver version as a string and return a string. Type: (version: string, pack: {index: number, manifest: ManifestSchema, pack: Pack}) => string",
+                                            "default": "(version, pack) => version.replace('rc', 'RC').split('+')[0].replaceAll('.', '-')",
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     }
                 }
@@ -239,7 +468,7 @@
                         "default": "./"
                     },
                     "release_name": {
-                        "description": "If the file type is mcaddon, the name of the folder in the mcaddon file. If the file type is mcpack, the name of the mcpack file. Defaults to the name of the pack's folder.",
+                        "description": "If the file type is mcaddon, the name of the folder in the mcaddon file. If the file type is mcpack, the name of the mcpack file, should not include the `.mcpack` extension, put `${version}` in the name to have it be replaced with the version of the pack. Defaults to the name of the pack's folder, or if the file type is mcpack, the name of the pack's folder followed by `-v${version}`.",
                         "type": "string"
                     },
                     "modifications": {
@@ -506,6 +735,12 @@
             "default": "tuple",
             "type": "string",
             "enum": ["tuple", "semver", "current"]
+        },
+        "generation_mode": {
+            "description": "Whether to directly copy the files into the release files, or to copy the files into a folder and then zip them into the release files. Defaults to contained.\n\nNote: This option is currently not functional.",
+            "default": "contained",
+            "type": "string",
+            "enum": ["contained", "externalFolder"]
         }
     }
 }

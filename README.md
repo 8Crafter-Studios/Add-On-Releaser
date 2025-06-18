@@ -35,7 +35,11 @@ npm i -g add-on-releaser
 ```
 Usage:
 
-add-on-releaser [configPath]
+add-on-releaser [configPath]            Generate the release files.
+add-on-releaser --update                Update the Add-On Releaser.
+add-on-releaser -u                      Update the Add-On Releaser.
+add-on-releaser --version               Get the current version of the Add-On Releaser.
+add-on-releaser -v                      Get the current version of the Add-On Releaser.
 
 Parameters:
 
@@ -114,8 +118,7 @@ Here is the default configuration file (Note: You will need to modify a few opti
     "file_type": "mcaddon",
     "file_name": "myaddon-v${version}", // Set this to the name you want the .mcaddon file to have, ${version} will be replaced with the version of the pack.
     "file_name_version": {
-        "format": "dashed",
-        "sourcePack": "00000000-0000-4000-8000-000000000000" // Set this to the UUID of the pack you want to get the version number from.
+        "format": "dashed"
     },
     "release_version_format": "tuple"
 }

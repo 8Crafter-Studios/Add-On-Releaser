@@ -38,6 +38,21 @@ export type AddOnReleaserConfiguration = {
      * @default "tuple"
      */
     release_version_format?: "tuple" | "semver" | "current";
+    /**
+     * Whether to directly copy the files into the release files, or to copy the files into a folder and then zip them into the release files.
+     * Defaults to contained.
+     *
+     * @todo This is currently not functional.
+     *
+     * @default "contained"
+     */
+    generation_mode?: "contained" | "externalFolder";
+    /**
+     * The name of the mcaddon file, should not include the `.mcaddon` extension. Put `${version}` in the name to have it be replaced with the version of the pack. The version will be formatted like `1-2-3-preview-20`.
+     *
+     * @default "myaddon-v${version}"
+     */
+    file_name: string;
 } & (
     | {
           file_type?: "mcaddon";
@@ -69,68 +84,112 @@ export type AddOnReleaserConfiguration = {
                */
               format?: "dashed" | "current" | "JavaScript";
               /**
-               * The pack to get the version number from, should be the UUID of a pack in the `packs` array.
-               * 
-               * It must match the following regex: `/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/`
-               */
-              sourcePack: string;
-          } & ({
-              format?: "dashed" | "current";
-          } | {
-              format: "JavaScript";
-              /**
-               * "The JavaScript callback function to be used to format the version number. The function should accept a semver version as a string and return a string. Type: (version: string) => string
+               * The pack to get the version number from, should be the UUID of a pack in the `packs` array. Defaults to the UUID of the first pack in the {@link AddOnReleaserConfiguration.packs} array.
                *
-               * @default
-               * ```javascript
-               * "(version) => version.replace('rc', 'RC').split('+')[0].replaceAll('.', '-')""
-               * ```
+               * It must match the following regex: `/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/`
+               *
+               * @default config.packs[0]
                */
-              JavaScript_callback: string;
-          });
+              sourcePack?: string;
+          } & (
+              | {
+                    format?: "dashed" | "current";
+                }
+              | {
+                    format: "JavaScript";
+                    /**
+                     * "The JavaScript callback function to be used to format the version number. The function should accept a semver version as a string and return a string. Type: (version: string, pack: {index: number, manifest: ManifestSchema, pack: Pack}) => string
+                     *
+                     * @default
+                     * ```javascript
+                     * "(version, pack) => version.replace('rc', 'RC').split('+')[0].replaceAll('.', '-')""
+                     * ```
+                     */
+                    JavaScript_callback: string;
+                }
+          );
       }
     | {
           file_type: "mcpack";
-      }
-) & (
-    | {
-          release_version_format?: "tuple" | "current";
-      }
-    | {
-          release_version_format: "semver";
           /**
-           * If the build version should be stripped from the release version.
-           * ex. v1.2.3-preview.20+BUILD.1 -> v1.2.3-preview.20
+           * An object containing the format of the version number to be used in the file name of the release files.
            *
-           * @default true
+           * @default
+           * ```json
+           * {
+           *     "format": "dashed",
+           *     "sourcePack": ""
+           * }
+           * ```
            */
-          strip_build_version?: true;
-          /**
-           * If the preview version should be stripped from the release version, requires strip_build_version to be true.
-           * ex. v1.2.3-preview.20+BUILD.1 -> v1.2.3
-           *
-           * @default false
-           */
-          strip_preview_version?: boolean;
+          file_name_version: {
+              /**
+               * The format of the version number to be used in the file name of the release files.
+               * - `dashed`: The version number will be formatted like `1-2-3-preview-20`. Release candidates will capitalize RC (1.2.3-rc.1 -> 1-2-3-RC-1)
+               * - `current`: The version number will be the same as the version number of the pack.
+               * - `JavaScript`: The semver version will be passed into the provided JavaScript function. The function should accept a semver version as a string and return a string.
+               *
+               * @default "dashed"
+               */
+              format?: "dashed" | "current" | "JavaScript";
+          } & (
+              | {
+                    format?: "dashed" | "current";
+                }
+              | {
+                    format: "JavaScript";
+                    /**
+                     * "The JavaScript callback function to be used to format the version number. The function should accept a semver version as a string and return a string. Type: (version: string, pack: {index: number, manifest: ManifestSchema, pack: Pack}) => string
+                     *
+                     * @default
+                     * ```javascript
+                     * "(version, pack) => version.replace('rc', 'RC').split('+')[0].replaceAll('.', '-')""
+                     * ```
+                     */
+                    JavaScript_callback: string;
+                }
+          );
       }
-    | {
-          release_version_format: "semver";
-          /**
-           * If the build version should be stripped from the release version.
-           * ex. v1.2.3-preview.20+BUILD.1 -> v1.2.3-preview.20
-           *
-           * @default true
-           */
-          strip_build_version: false;
-          /**
-           * If the preview version should be stripped from the release version, requires strip_build_version to be true.
-           * ex. v1.2.3-preview.20+BUILD.1 -> v1.2.3
-           *
-           * @default false
-           */
-          strip_preview_version?: false;
-      }
-);
+) &
+    (
+        | {
+              release_version_format?: "tuple" | "current";
+          }
+        | {
+              release_version_format: "semver";
+              /**
+               * If the build version should be stripped from the release version.
+               * ex. v1.2.3-preview.20+BUILD.1 -> v1.2.3-preview.20
+               *
+               * @default true
+               */
+              strip_build_version?: true;
+              /**
+               * If the preview version should be stripped from the release version, requires strip_build_version to be true.
+               * ex. v1.2.3-preview.20+BUILD.1 -> v1.2.3
+               *
+               * @default false
+               */
+              strip_preview_version?: boolean;
+          }
+        | {
+              release_version_format: "semver";
+              /**
+               * If the build version should be stripped from the release version.
+               * ex. v1.2.3-preview.20+BUILD.1 -> v1.2.3-preview.20
+               *
+               * @default true
+               */
+              strip_build_version: false;
+              /**
+               * If the preview version should be stripped from the release version, requires strip_build_version to be true.
+               * ex. v1.2.3-preview.20+BUILD.1 -> v1.2.3
+               *
+               * @default false
+               */
+              strip_preview_version?: false;
+          }
+    );
 
 /**
  * A pack to be included in the release files.

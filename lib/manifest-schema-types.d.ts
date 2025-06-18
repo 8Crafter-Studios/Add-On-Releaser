@@ -388,4 +388,3 @@ export interface Subpacks1 {
     name: Name5;
     memory_tier: MemoryTier;
 }
-//# sourceMappingURL=manifest-schema-types.d.ts.map
