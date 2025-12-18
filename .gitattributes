@@ -3,8 +3,6 @@
 *.json     linguist-detectable
 *.jsonc    linguist-detectable
 *.jsonl    linguist-detectable
-*.gitattributes linguist-detectable -linguist-generated -linguist-vendored -lingust-documentation linguist-language=gitattributes
-*.gitignore linguist-detectable -linguist-generated -linguist-vendored -lingust-documentation linguist-language=gitignore
 
 /lib/**    linguist-generated
 
@@ -19,7 +17,3 @@ package.json -linguist-detectable
 package-lock.json -linguist-detectable
 .package-lock.json -linguist-detectable
 manifest.json -linguist-detectable
-
-/assets/images/**/*.json -linguist-detectable
-/assets/images/**/*.jsonc -linguist-detectable
-/assets/images/**/*.jsonl -linguist-detectable
