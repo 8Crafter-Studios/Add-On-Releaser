@@ -1,0 +1,25 @@
+*.ps1      linguist-detectable
+*.xml      linguist-detectable
+*.json     linguist-detectable
+*.jsonc    linguist-detectable
+*.jsonl    linguist-detectable
+*.gitattributes linguist-detectable -linguist-generated -linguist-vendored -lingust-documentation linguist-language=gitattributes
+*.gitignore linguist-detectable -linguist-generated -linguist-vendored -lingust-documentation linguist-language=gitignore
+
+/lib/**    linguist-generated
+
+/lib/zip.d.ts -linguist-generated linguist-vendored
+/lib/zip.js -linguist-generated linguist-vendored
+
+/src/zip.d.ts linguist-vendored
+/src/zip.js linguist-vendored
+
+tsconfig.json -linguist-detectable
+package.json -linguist-detectable
+package-lock.json -linguist-detectable
+.package-lock.json -linguist-detectable
+manifest.json -linguist-detectable
+
+/assets/images/**/*.json -linguist-detectable
+/assets/images/**/*.jsonc -linguist-detectable
+/assets/images/**/*.jsonl -linguist-detectable
